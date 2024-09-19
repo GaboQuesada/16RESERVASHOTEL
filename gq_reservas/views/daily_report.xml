@@ -1,0 +1,64 @@
+<odoo>
+  <data>
+ 
+
+    <record model="ir.ui.view" id="dailyReport_list">
+      <field name="name">Hotel Reservaciones dailyReport</field>
+      <field name="model">dailyreport</field>
+      <field name="arch" type="xml">
+        <tree>
+              <field name="name"/>
+              <field name="contador" />
+         
+        </tree>
+      </field>
+    </record>
+
+
+    <record id="dailyReport_form" model="ir.ui.view">
+            <field name="name">dailyReport.form</field>
+            <field name="model">dailyreport</field>
+            <field name="arch" type="xml">
+                <form string="dailyReport">
+                   
+                    <sheet>
+                
+
+                        <group>
+                          
+                                <field name="name" />
+                                <field name="contador" />
+                                
+                        </group>
+                          <field name="saleOrderLines_ids" />
+                     
+                         
+                    </sheet>
+                    
+                </form>
+            </field>
+      </record>
+
+
+      
+
+      
+
+
+         <record id="action_dailyReport_view" model="ir.actions.act_window">
+            <field name="name">Hotel Daily Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dailyreport</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Reservaciones
+                </p>
+                <p>
+                    Click 'Nuevo' para añadir nuevos elementos
+                </p>
+            </field>
+        </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,58 @@
+<odoo>
+    <!--Form view for folio report wizard -->
+    <record id="view_saleorderaddlines_wizard" model="ir.ui.view">
+        <field name="name">view.saleorderaddlines.wizard</field>
+        <field name="model">saleorderaddlines</field>
+        <field name="arch" type="xml">
+            <form string="Agregar lineas">
+                <group >
+                    <field name="sale_order_id"/>
+                    <field name="days_count" />
+                    <field name="night_count" />
+                    <field name="date_start" required="1" />
+                    <field name="date_end" required="1" />
+                    <field name="pricelist_id" />
+                    <field name="totalhabitaciones" />
+                    <field name="product_id" invisible="1"/>
+                </group>
+                <!--
+                <group string="Otros">
+                   
+                    
+                    <field name="detalle_ids" >
+                            <tree>
+                                <field name="elproducto" string="Nombre"/>
+                                <field name="capacidad" string="Cantidad"/>
+                            </tree>
+                    </field>
+
+                </group>
+                 -->
+                <footer>
+                    <button
+                        name="agregarlineas"
+                        string="Agregar Lineas"
+                        icon="fa-database"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        string="Cancelar"
+                        icon="fa-close"
+                        class="btn btn-primary"
+                        special="cancel"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!--Action for folio report wizard -->
+    <record id="actions_saleorderaddlines_wizard" model="ir.actions.act_window">
+        <field name="name">actions saleorderaddlines wizard</field>
+        <field name="res_model">saleorderaddlines</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

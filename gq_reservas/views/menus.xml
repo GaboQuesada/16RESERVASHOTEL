@@ -1,0 +1,13 @@
+<odoo>
+  <data>
+
+    <menuitem name="Hospedaje"      id="reservas.menu_root" web_icon="reservas,static/description/odoo_icon.png" groups="reservas.qgs_hotel_usuario"/>
+    <menuitem name="Reservas"       id="reservas__reservas"       parent="reservas.menu_root"  action="reservas_hospedajes_action" />
+    <menuitem name="Por Habitación" id="reservas__reservashabi"   parent="reservas.menu_root"  action="action_reservahotelhabi_view" />
+    <menuitem name="Alimentación"   id="reservas__alimentacion"   parent="reservas.menu_root"  action="sale_order_line_views_action" />
+    <menuitem name="Daily"          id="reservas__Daily"          parent="reservas.menu_root"  action="action_dailyReport_view" />
+    <menuitem name="Políticas"      id="reservas__politicas"      parent="sale.menu_sale_config"  action="action_politicas_view"   />
+ 
+      
+  </data>
+</odoo>

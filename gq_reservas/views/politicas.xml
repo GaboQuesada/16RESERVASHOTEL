@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+ 
+
+    <record id="politicass_form" model="ir.ui.view">
+            <field name="name">politicas.form</field>
+            <field name="model">politicas</field>
+            <field name="arch" type="xml">
+                <form string="Políticas">
+                   
+                    <sheet>
+              
+                        <group>
+                          <field name="name" />
+                          <field name="terminos" />
+                         
+                        </group>
+
+                         
+                    </sheet>
+                    
+                </form>
+            </field>
+    </record>
+
+    <record model="ir.ui.view" id="politicas_list">
+      <field name="name">Políticas</field>
+      <field name="model">politicas</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" />
+          <field name="terminos" />
+        </tree>
+      </field>
+    </record>
+
+
+
+
+      
+
+    <record id="action_politicas_view" model="ir.actions.act_window">
+            <field name="name">Políticas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">politicas</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Políticas
+                </p>
+            </field>
+    </record>
+
+  </data>
+</odoo>

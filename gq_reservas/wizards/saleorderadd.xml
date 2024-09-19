@@ -1,0 +1,43 @@
+<odoo>
+    <!--Form view for folio report wizard -->
+    <record id="view_saleorderadd_wizard" model="ir.ui.view">
+        <field name="name">view.saleorderadd.wizard</field>
+        <field name="model">saleorderadd</field>
+        <field name="arch" type="xml">
+            <form string="Agregar linea">
+                <group >
+                    <field name="sale_order_id"/>
+                    <field name="days_count" />
+                    <field name="date_start" required="1" />
+                    <field name="date_end" required="1" />
+                    <field name="pricelist_id" />
+                    <field name="product_id" />
+                </group>
+                <footer>
+                    <button
+                        name="agregarlinea"
+                        string="Agregar Linea"
+                        icon="fa-database"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        string="Cancelar"
+                        icon="fa-close"
+                        class="btn btn-primary"
+                        special="cancel"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!--Action for folio report wizard -->
+    <record id="actions_saleorderadd_wizard" model="ir.actions.act_window">
+        <field name="name">actions saleorderadd wizard</field>
+        <field name="res_model">saleorderadd</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

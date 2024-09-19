@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_reservas_produc_template_form_inherited" model="ir.ui.view">
+        <field name="name">view.reservas.produc.template.form.inherited</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="es_habitacion" />
+                <field name="es_alimentacion" />
+            </xpath>
+
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="page_hoteleria_configuracion"  string="Hotelería Configuración" attrs="{'invisible': [('es_habitacion', '=', False)]}">
+                     <group name="group_configuracion_habitacion" string="Configuración habitación">
+                        <group  >
+                            <field name="es_habilitada" />
+                            <field name="numerocama" />
+                            <field name="capacidad" />
+                        </group>
+                     </group>
+                 </page>
+                 <page name="page_hoteleria_habitacion_reservas"  string="Hotelería Reservas" attrs="{'invisible': [('es_habitacion', '=', False)]}">
+                   
+                        
+                   
+                             <tree editable="top">
+                                <field name="reservaproductolinea_ids" >
+                                    <tree editable="bottom">
+                                        <field name="order_id"/>
+                                        <field name="line_id"/>
+                                        <field name="date_start"/>
+                                        <field name="date_end" /> 
+                                    </tree>
+                                </field>
+                            </tree>  
+                      
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

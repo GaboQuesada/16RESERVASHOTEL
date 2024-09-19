@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--   VISTA FORMULARIO HEREDADA  -->
+
+
+        <record id="view_custom_sale_order_form" model="ir.ui.view">
+            <field name="name">custom.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+
+           
+
+                <field name="partner_id" position="after">
+                    <field name="esreserva" invisible="1"/>
+                    <field name="mi_campo_time" invisible="1"/>
+                    <field name="solicitadopor" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="canonsinac" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="observacion" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="date_start" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="date_end" attrs="{'invisible': [('esreserva','=',False)]}"/>    
+                     <field name="days_count" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="night_count" attrs="{'invisible': [('esreserva','=',False)]}"/> 
+                    <field name="totalADULTOS"  attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="totalGuias"  attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="totalNINOS"    attrs="{'invisible': [('esreserva','=',False)]}"/>
+                    <field name="totalpersonas"  attrs="{'invisible': [('esreserva','=',False)]}"/>
+                   
+                  
+                     
+                </field>
+                <field name="payment_term_id" position="after">
+                   
+                   
+                    <field name="estadoreserva" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                  
+                    <field name="politica" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                     <field name="esreservaconfirmada" attrs="{'invisible': [('esreserva','=',False)]}"/>  
+                       <field name="esdelily" string="Daily" attrs="{'invisible': [('esreserva','=',False)]}"/>
+                       
+                   
+                    
+    
+                   
+                </field>
+                <xpath expr="//group[@name='sale_header']" position="after">  
+                
+                    <group name="camas" string="HABITACIONES"  colspan="2" attrs="{'invisible': [('esreserva','=',False)]}">
+
+                      <button name="create_wizardlines" string="Reservar" class="oe_highlight" type="object"/> 
+                  
+                       
+                      
+                    </group>
+                   
+                </xpath>
+
+                 <xpath expr="//notebook/page[1]/field/tree/field[@name='price_unit']" position="after">
+                  
+                    <field name="checkin_date"  attrs="{'column_invisible': [('parent.esreserva', '=', False)]}"/>
+                    <field name="checkout_date" attrs="{'column_invisible': [('parent.esreserva', '=', False)]}"/>
+                    <field name="pricelist_id"  attrs="{'column_invisible': [('parent.esreserva', '=', False)]}"/>
+                   
+                </xpath>
+
+                 <xpath expr="//notebook/page[1]/field/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('sale_ok', '=', True),('es_habitacion', '=', False), '|', ('company_id', '=', False), ('company_id', '=', company_id)]</attribute>
+                </xpath>
+                
+           
+            </field>
+        </record>
+
+
+
+
+<!--  MI PROPIA VISTA TREE VIEW PARA EL MODULO QUE ES HEREDADO DE SALE.ORDER  -->
+
+
+  <record model="ir.ui.view" id="informes_tree_view">
+          <field name="name">informes_tree_view</field>
+          <field name="model">sale.order</field>
+          <field name="type">tree</field>
+          <field name="arch" type="xml">
+            <tree string="Reservas" >
+             <field name="canonsinac" attrs="{'invisible': [('esreserva','=',False)]}"/>
+              <field name="esreserva" invisible="1"/>
+              <field name="name" readonly="1" string="Nombre"/>
+              <field name="esdelily" string="Daily" attrs="{'invisible': [('esreserva','=',False)]}"/>
+              <field name="esreservaconfirmada" attrs="{'invisible': [('esreserva','=',False)]}"/>
+              <field name="create_date" />
+              <field name="date_start"/>
+              <field name="date_end"/>
+              <field name="days_count"  string="Días"/>
+              <field name="night_count" string="Noches"/>
+              <field name="totalADULTOS"  sum="Total"   string="C.A"/>
+              <field name="totalNINOS"    sum="Total"   string="C.N"/>
+              <field name="totalpersonas" sum="Total"   string="T.P"/>
+              <field name="partner_id" />
+              <field name="solicitadopor" />
+              <field name="user_id" widget="many2one_avatar_user" optional="show"/>    
+              <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" optional="show"/>
+              <field name="state" decoration-success="state == 'sale' or state == 'done'" decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"/>
+              <field name="invoice_status" decoration-success="invoice_status == 'invoiced'" decoration-info="invoice_status == 'to invoice'" decoration-warning="invoice_status == 'upselling'" widget="badge" optional="show"/>
+              <field name="estadoreserva" decoration-success="estadoreserva == 'consumido'" decoration-info="estadoreserva == 'cancelado'" decoration-danger="estadoreserva == 'consumiendo'" decoration-warning="estadoreserva == 'por_consumir' and invoice_status == 'invoiced'" widget="badge" optional="show"/>
+             
+            </tree>
+          </field>
+           <field name="priority" eval="10"/>
+  </record>
+
+ 
+    <record id="view_name_search_ticoreservastreeview" model="ir.ui.view">
+      <field name="name">view_name_search_ticoreservastreeview</field>
+      <field name="model">sale.order</field>
+      <field name="type">search</field>
+      <field name="arch" type="xml">
+        <search>
+          <filter name="filtroreserva"    string="Es una reserva"  domain="[('esreserva','=',True)]"  />
+          <filter name="filtrodaily"      string="Es Deily"        domain="[('esdelily','=',True)]"  />
+          <filter name="filtroconfirmado" string="Esta Confirmada" domain="[('esreservaconfirmada','=',True)]"  />
+          <filter string="Son reservas" domain="[('esreserva','=',True)]" name="my_sale_ordersreservas_filter"/>
+          <filter name="filtroconsumo" string="Es consumo" domain="[('estadoreserva','=','consumiendo')]"/>
+          <filter name="filtroporconsumir" string="Por consumir" domain="[('estadoreserva','=','por_consumir')]"/>
+          <filter name="filtroconsumido" string="Consumido" domain="[('estadoreserva','=','consumido')]"/>
+          <field name="canonsinac" string="Boleta sinac"/>
+          <field name="name" string="Numero Reserca"/>
+          <field name="partner_id" string="Cliente"/>
+        
+          <filter name="estadoreservagrupo" string='Por estado reserva' domain="[('esreserva','=',True)]" context="{'group_by' :'estadoreserva'}"/> 
+          <filter name="estadofacturagrupo" string='Por estado factura' domain="[('esreserva','=',True)]" context="{'group_by' :'invoice_status'}"/> 
+          <filter name="estadoestadoagrupo" string='Por estado presupuesto' domain="[('esreserva','=',True)]" context="{'group_by' :'state'}"/> 
+          <filter name="estadoclienteagrupo" string='Cliente' domain="[('esreserva','=',True)]" context="{'group_by' :'partner_id'}"/> 
+          <filter name="estadosolicitadoagrupo" string='Solicitado por' domain="[('esreserva','=',True)]" context="{'group_by' :'solicitadopor'}"/> 
+        </search>
+      </field>
+       <field name="priority" eval="10"/>
+    </record>
+
+
+         <record id="reservas_hospedajes_action" model="ir.actions.act_window">
+            <field name="name">Reservas Hospedaje</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="informes_tree_view"/>
+            <field name="search_view_id" ref="view_name_search_ticoreservastreeview"/> 
+            <field name="context">{"search_default_filtroreserva":1,'default_esreserva': True}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Reservas
+                </p>
+                <p>
+                    Click 'Nuevo' para añadir nuevos elementos
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="res.groups" id="qgs_hotel_settings">
+        <field name="name">Acceso, configuración, características Reservas</field>
+    </record>
+     <record model="res.groups" id="qgs_hotel_usuario">
+        <field name="name">Puede acceder a las características de hotel</field>
+    </record>
+
+
+
+
+
+</odoo>

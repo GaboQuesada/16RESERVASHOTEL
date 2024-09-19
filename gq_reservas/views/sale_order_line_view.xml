@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_line_product_view_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.product.views</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//tree//field[@name='name']" position="before">
+                
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_line_form_view" model="ir.ui.view">
+        <field name="name">sale.lines.form</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order Lines" edit="1" create="0" duplicate="0" delete="0">
+                <sheet>
+                   
+                    <group>
+                        <group>
+                            <h2>
+                                <field name="order_id" string="Order" readonly="1"/>
+                            </h2>
+                            <br/>
+                            <field name="order_partner_id" readonly="1"/>
+                            <field name="name" string="Description"/>
+                            <field name="qty_invoiced" readonly="1"/>
+                            <field name="qty_delivered" string="Delivered Quantity" readonly="1"/>
+                        </group>
+                        <group class="mt-5">
+                            <field name="es_alimentacion"  invisible="1"/>
+                            <field name="es_orderDeily"    invisible="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="price_unit" readonly="1"/>
+                            <field name="product_uom_qty" string="Quantity" readonly="1"/>
+                            <field name="price_subtotal" sum="Total" widget="monetary" readonly="1"/>
+                            <field name="state" string="Order Status" readonly="1"/>
+                            <field name="invoice_status" string="Invoice Status" readonly="1"/>
+                            <field name="product_uom" string="Unit of Measure" groups="uom.group_uom" readonly="1"/>
+                            <field name="product_uom_category_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_order_line_tree_view" model="ir.ui.view">
+        <field name="name">sale.lines.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order Lines" create="false" edit="false" delete="false">
+                <field name="es_alimentacion"  invisible="1"/>
+                <field name="es_orderDeily"    invisible="0"/>
+                <field name="canonsinac"/>
+                <field name="order_id"/>
+                <field name="order_partner_id"/>
+                <field name="product_id"/>
+                <field name="name"/>
+                <field name="product_uom_qty" string="Qty"/>
+                <field name="state" string="Status"  decoration-success="state == 'sale' or state == 'done'"  decoration-info="state == 'draft' or state == 'sent'"  widget="badge" optional="show"/>
+                <field name="invoice_status" string="Estado Factura"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="sale_order_line_view_pivot" model="ir.ui.view">
+        <field name="name">sale.lines.pivot</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Pivot View Analysis" sample="1">
+                <field name="order_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="price_unit" type="measure"/>
+                <field name="product_uom_qty" type="measure"/>
+                <field name="price_subtotal" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+ 
+
+    <record id="sale_order_line_calender_view" model="ir.ui.view">
+        <field name="name">sale.lines.calender</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <calendar string="Sales Orders" mode="month"
+                      date_start="create_date"
+                      color="order_partner_id" hide_time="true" event_limit="5">
+                <field name="currency_id" invisible="1"/>
+                <field name="order_partner_id" avatar_field="avatar_128"/>
+                <field name="order_id"/>
+            </calendar>
+        </field>
+    </record>
+    <record id="view_sales_order_line_search_filter" model="ir.ui.view">
+        <field name="name">sale.order.line.search</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Sale Order Lines">
+                <field name="canonsinac" string="Boleta Sinac"/>
+                <field name="order_id" string="Sale Orders"/>
+                <field name="order_partner_id" operator="child_of"/>
+                <field name="product_id"/>
+                <field name="salesman_id"/>
+
+                <filter string="My Sales Order Lines"
+                        name="my_sales_order_lines"
+                        domain="[('salesman_id','=',uid)]"/>
+                <separator/>
+                <filter name="sale" string="Sale"
+                        domain="[('state', '=', 'sale')]"/>
+                <filter name="cancel" string="Cancelled"
+                        domain="[('state', '=', 'cancel')]"/>
+                <separator/>
+                <filter string="To Invoice"
+                        name="to_invoice"
+                        domain="[('invoice_status','=','to invoice')]"/>
+                <filter string="To Upsell"
+                        name="upselling"
+                        domain="[('invoice_status','=','upselling')]"/>
+                <separator/>
+                <filter string="Create Date" name="filter_create_date"
+                        date="create_date"/>
+                <separator/>
+                <filter string="FECHA CONSUMO" name="filter_create_date"
+                        date="checkin_date"/>
+                <separator/>
+                <filter name="Alimentacion" string="Alimentación"
+                        domain="[('es_alimentacion', '=', 'True')]"/>
+                <separator/>
+                <separator/>
+
+                <group expand="0" string="Group By">
+                    <separator/>
+                    <filter string="Es Daily" name="product" domain="[]" context="{'group_by':'es_orderDeily'}"/>
+                    <filter name="date" string="FECHA CONSUMO" domain="[]"
+                            context="{'group_by':'checkin_date'}"/>
+                    <separator/>
+                    <filter string="Product" name="product" domain="[]"
+                            context="{'group_by':'product_id'}"/>
+                    <filter string="Order" name="order" domain="[]"
+                            context="{'group_by':'order_id'}"/>
+                    <filter string="Salesperson" name="salesperson" domain="[]"
+                            context="{'group_by':'salesman_id'}"/>
+                    <filter name="customer" string="Customer" domain="[]"
+                            context="{'group_by':'order_partner_id'}"/>
+                    <separator/>
+                    <filter name="date" string="Create Date" domain="[]"
+                            context="{'group_by':'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="sale_order_line_views_action" model="ir.actions.act_window">
+        <field name="name">Alimentación</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree,form,pivot,calendar</field>
+        <field name="domain">[('state', 'not in', ('draft', 'sent'))]</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                            (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_order_line_tree_view')}),
+                            (0, 0, {'view_mode': 'pivot', 'view_id': ref('sale_order_line_view_pivot')}),
+                            (0, 0, {'view_mode': 'calendar', 'view_id': ref('sale_order_line_calender_view')}),
+                            ]"/>
+        <field name="search_view_id" ref="view_sales_order_line_search_filter"/>
+
+    </record>
+    <menuitem id="menu_sale_order_lines"
+              name="Order Line Views"
+              action="sale_order_line_views_action"
+              parent="sale.sale_order_menu"
+              groups="sales_team.group_sale_salesman"
+              sequence="42"/>
+</odoo>

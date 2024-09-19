@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_saleorderreservas_document">
+    <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+        <t t-set="forced_vat" t-value="doc.fiscal_position_id.foreign_vat"/> <!-- So that it appears in the footer of the report instead of the company VAT if it's set -->
+
+
+        <div class="page">
+            <div class="oe_structure"/>
+
+            <div t-if="doc.esreservaconfirmada == True" class="text-center">
+                 <strong>Confirmation</strong>
+            </div>
+            <br/>
+
+            <h2 class="mt-4">
+ 
+                <span >Boleta SINAC # </span>
+                <span t-field="doc.canonsinac"/>
+            </h2>
+                <div class="row">
+                    <!-- Primera columna -->
+                    <div class="col-4">
+                        <strong>Cliente:</strong> <span t-esc="doc.partner_id.name"/>
+                        <br/>
+                        <strong>Dirección:</strong> <span t-esc="doc.partner_id.street"/>
+                         <br/>
+                        <strong>País:</strong> <span t-esc="doc.partner_id.country_id.name"/>
+                         <br/>
+                        <strong>Teléfono:</strong> <span t-esc="doc.partner_id.phone"/>
+                        <br/>
+                        <strong>Correo:</strong> <span t-esc="doc.partner_id.email"/>
+                        <br/>
+                        <strong>Lugar:</strong> 
+                             <span t-if="doc.esdelily == True"  > Sirena Daily</span>
+                             <span t-if="doc.esdelily == False" >Sirena Overnight</span>
+                    </div>
+                    <!-- Segunda columna -->
+                    <div class="col-4">
+                        <strong>Encargado:</strong> 
+                             <span t-if="doc.solicitadopor" t-esc="doc.solicitadopor.name"/>
+                             <span t-if="not doc.solicitadopor" t-esc="doc.partner_id.name"/>
+                        <br/>
+                        <strong>Folio:</strong> <span t-esc="doc.name"/>
+                        <br/>
+                        <strong>Check In:</strong> <span t-esc="doc.date_start"  t-options='{"widget": "date"}'/>
+                        <br/>
+                        <strong>Check Out:</strong> <span t-esc="doc.date_end"  t-options='{"widget": "date"}'/>
+                         <br/>
+                        <strong>Forma Pago:</strong> <span t-esc="doc.payment_methods_id.name"/>
+                        <br/>
+                        <strong>Estado:</strong> <span t-esc="doc.invoice_status"/>
+                    </div>
+                    <!-- Tercera columna -->
+                    <div class="col-4">
+                        <strong>Fecha:</strong> <span t-esc="doc.date_order" t-options='{"widget": "date"}'/>
+                        <br/>
+                        <strong>N. de habitaciones:</strong> <span t-esc="doc.totalADULTOS"/>
+                        <br/>
+                        <strong>N. de adultos:</strong> <span t-esc="doc.totalADULTOS"/>
+                        <br/>
+                        <strong>N. de niños:</strong> <span t-esc="doc.totalNINOS"/>
+                        <br/>
+                        <strong>N. de Guias:</strong> <span t-esc="doc.totalGuias"/>
+                        <br/>
+                        <strong>N. T personas:</strong> <span t-esc="doc.totalpersonas"/>
+                        <br/>
+                    </div>
+                </div>
+           
+
+            <div class="row mt-4 mb-4" id="informations">
+                <div t-if="doc.user_id.name" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Representante:</strong>
+                    <p class="m-0" t-field="doc.user_id"/>
+                </div>
+                  <div t-if="doc.user_id.name" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Moneda:</strong>
+                    <p class="m-0" t-field="doc.factura_currency"/>
+                </div>
+                 <div t-if="doc.user_id.name" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Tipo Cambio:</strong>
+                    <p class="m-0" t-field="doc.factura_inverse_company_rate"/>
+                </div>
+                <div t-if="doc.validity_date" class="col-auto col-2 mw-100 mb-2" name="expiration_date" style="font-size: 13px;">
+                    <strong>Valido hasta:</strong>
+                    <p class="m-0" t-field="doc.validity_date"/>
+                </div>
+                 <div t-if="doc.user_id.name" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Condición Pago:</strong>
+                    <p class="m-0" t-field="doc.payment_term_id.sale_conditions_id.name"/>
+                </div>
+                 <div t-if="doc.user_id.name" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Plazo pagó:</strong>
+                    <p class="m-0" t-field="doc.payment_term_id.display_name"/>
+                </div>
+                <div t-if="doc.days_count" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Días:</strong>
+                    <p class="m-0" t-field="doc.days_count"/>
+                </div>
+                <div t-if="doc.night_count" class="col-auto col-2 mw-100 mb-2" style="font-size: 13px;">
+                    <strong>Noches:</strong>
+                    <p class="m-0" t-field="doc.night_count"/>
+                </div>
+               
+               
+               
+               
+            </div>
+
+            <!-- Is there a discount on at least one line? -->
+            <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+            <t t-set="display_discount" t-value="any(l.discount for l in lines_to_report)"/>
+
+            <table class="table table-sm o_main_table table-borderless mt-4">
+                <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-start" style="font-size: 12px;">Producto</th>
+                        <th name="th_description" class="text-start" style="font-size: 12px;">Detalle</th>
+                        <th name="th_quantity" class="text-start" style="font-size: 12px;">Noches / Cantidad</th>
+                        <th name="th_priceunit" class="text-start" style="font-size: 12px;">Precio Unidad</th>
+                        <th name="th_discount" t-if="display_discount" class="text-start" style="font-size: 12px;">
+                            <span>% descuento</span>
+                        </th>
+
+                        <th name="th_taxes" class="text-start" style="font-size: 12px;">Tarifa</th>
+                        <th name="th_taxes" class="text-start" style="font-size: 12px;">F.Entrada</th>
+                        <th name="th_taxes" class="text-start" style="font-size: 12px;">F.Salida</th>
+                        <th name="th_subtotal" class="text-start" style="font-size: 12px;">
+                            <span groups="account.group_show_line_subtotals_tax_excluded">Monto</span>
+                            <span groups="account.group_show_line_subtotals_tax_included">Precio total</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+
+                    <t t-set="current_subtotal" t-value="0"/>
+
+                    <t t-foreach="lines_to_report" t-as="line">
+
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                        <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <t t-if="not line.display_type">
+                                <td name="td_name"><span t-field="line.product_template_id.name"/></td>
+                                <td name="td_name"><span t-field="line.name"/></td>
+                                <td name="td_quantity" class="text-end">
+                                    <span t-field="line.product_uom_qty"/>
+                                   
+                                </td>
+                                <td name="td_priceunit" class="text-end">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td t-if="display_discount" class="text-end">
+                                    <span t-field="line.discount"/>
+                                </td>
+                                
+                                <td name="td_name" class="text-start"><span t-field="line.pricelist_id" style="font-size: 10px;"/></td>
+                                <td name="td_name"><span t-field="line.checkin_date"  t-options='{"widget": "date"}'/></td>
+                                <td name="td_name"><span t-field="line.checkout_date"  t-options='{"widget": "date"}'/></td>
+                                <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                </td>
+                            </t>
+                            <t t-elif="line.display_type == 'line_section'">
+                                <td colspan="10"><span t-field="line.name"/></td>
+                            </t>
+                            <t t-elif="line.display_type == 'line_note'">
+                                <td colspan="10"><span t-field="line.name"/></td>
+                            </t>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col">
+                    <div id="informations">
+                        <p t-field="doc.note" t-if="doc.note"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="border border-black rounded">
+
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr class="border border-black border-bottom-0">
+                                    <th class="text-start">Cliente</th>
+                                    <th class="text-end">Monto</th>
+                                    <th class="text-end">Impuesto</th>
+                                    <th class="text-end">Total</th>
+                                    <th class="text-end">Total CRC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border border-black border-top-0">
+                                    <td>
+                                        <span t-field="doc.partner_id.name"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="doc.amount_untaxed"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="doc.amount_tax"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="doc.amount_total"/>
+                                    </td>
+                                     <td class="text-end">
+                                        <span t-field="doc.totalmontoencolones"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                       
+
+                    </div>
+                </div>
+            </div>
+    
+             <div class="row mt-4">
+                <div class="col">
+                    <div class="border border-black rounded">
+                        <div style="width: 50%; float: left;">
+                            <!-- Table definition -->
+                            <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                <!-- First row -->
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 8px;">Monto facturado</td>
+                                    <td style="border: 1px solid #000; padding: 8px;"><span t-field="doc.amount_totalFE"/></td>
+                                </tr>
+                                <!-- Second row -->
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 8px;"> Saldo</td>
+                                    <td style="border: 1px solid #000; padding: 8px;"> <span t-field="doc.amount_totalFEdebe"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+
+
+
+        </div>
+    </t>
+</template>
+
+
+<template id="report_reservas_saleorder">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="reservas.report_saleorderreservas_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+</odoo>

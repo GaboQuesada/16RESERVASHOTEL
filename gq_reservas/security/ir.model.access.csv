@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reservas_reserva_hotel,reservas,model_reservahotel,reservas.qgs_hotel_usuario,1,1,1,1
+access_reservas_reservahotellinea,reservahotellinea,model_reservahotellinea,reservas.qgs_hotel_usuario,1,1,1,1
+access_reservas_productreservas,productreservas,model_productreservas,base.group_user,1,1,1,1
+access_reservas_saleorderadd,saleorderadd,model_saleorderadd,base.group_user,1,1,1,1
+access_reservas_saleorderaddlines,saleorderaddlines,model_saleorderaddlines,base.group_user,1,1,1,1
+access_reservas_reservaconfig,reservaconfig,model_reservaconfig,base.group_user,1,1,1,1
+access_reservas_showhabitaciones,showhabitaciones,model_showhabitaciones,base.group_user,1,1,1,1
+access_reservas_lineahabitacion,lineahabitacion,model_lineahabitacion,base.group_user,1,1,1,1
+access_reservas_otrosproductos,otrosproductos,model_otrosproductos,base.group_user,1,1,1,1
+access_reservas_resumen,resumen,model_resumen,base.group_user,1,1,1,1
+access_reservas_politicas,politicas,model_politicas,base.group_user,1,1,1,1
+access_reservas_dailyreport,dailyreport,model_dailyreport,base.group_user,1,1,1,1

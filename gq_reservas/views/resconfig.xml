@@ -1,0 +1,51 @@
+<odoo>
+  <data>
+ 
+    <record model="ir.ui.view" id="reservaconfig_list">
+      <field name="name">Hotel reservaconfig</field>
+      <field name="model">reservaconfig</field>
+      <field name="arch" type="xml">
+        <tree>
+           <field name="time_in" required="True" widget="time"/>
+           <field name="time_out" required="True" widget="time"/>
+           <field name="es_actual" />
+         
+        </tree>
+      </field>
+    </record>
+
+    <record id="reservaconfig_form" model="ir.ui.view">
+            <field name="name">reservaconfig.form</field>
+            <field name="model">reservaconfig</field>
+            <field name="arch" type="xml">
+                <form string="Hotel Reservaciones">
+                    <sheet>
+                
+                            <group>
+                                <field name="time_in" required="True"/>
+                                <field name="time_out" required="True"/>
+                                <field name="es_actual" />
+                            </group>
+                         
+                    </sheet> 
+                </form>
+            </field>
+      </record>
+
+        <record id="action_reservaconfig_view" model="ir.actions.act_window">
+            <field name="name">reservaconfig</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reservaconfig</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Configuración
+                </p>
+                <p>
+                    Click 'Nuevo' para añadir nuevos elementos
+                </p>
+            </field>
+        </record>
+
+  </data>
+</odoo>

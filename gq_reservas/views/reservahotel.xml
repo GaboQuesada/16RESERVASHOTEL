@@ -1,0 +1,89 @@
+<odoo>
+  <data>
+ 
+
+    <record model="ir.ui.view" id="reservahotel_list">
+      <field name="name">Hotel Reservaciones listado</field>
+      <field name="model">reservahotel</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+         
+        </tree>
+      </field>
+    </record>
+
+
+    <record id="reservahotel_form" model="ir.ui.view">
+            <field name="name">reservahotel.form</field>
+            <field name="model">reservahotel</field>
+            <field name="arch" type="xml">
+                <form string="Hotel Reservaciones">
+                   
+                    <sheet>
+                
+                        <div class="oe_title">
+                            <h1 class="d-flex">
+                                <field name="name" required="True"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="fechaHoraInicio" required="True"/>
+                                <field name="fechaHoraFin" required="True"/>
+                                <field name="diasdeestadia" required="True"/>
+                            </group>
+                            <group>
+                                <field name="facturara" required="True"/>
+                                <field name="encargado" required="True"/>
+                                <field name="touroperador" required="True"/>
+
+                            </group>
+                        </group>
+                        <group name="name" string="Detalles Hospedaje">
+                             <tree string="Grupos de Empleados" editable="top">
+                                <field name="reservahotellinea_ids" widget="one2many_list">
+                                    <tree editable="bottom">
+                                        <field name="huesped"/>
+                                        <field name="tarifa" />
+                                        <field name="fechaHoraInicio" />
+                                        <field name="fechaHoraFin" />    
+                                        <field name="diasdeestadia" />    
+                                        <field name="product_id" />   
+                                    </tree>
+                                </field>
+                            </tree>  
+                        </group>
+
+                         
+                    </sheet>
+                     <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </form>
+            </field>
+      </record>
+
+
+      
+
+        <record id="action_reservahotel_view" model="ir.actions.act_window">
+            <field name="name">Hotel Reservaciones</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reservahotel</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Reservaciones
+                </p>
+                <p>
+                    Click 'Nuevo' para añadir nuevos elementos
+                </p>
+            </field>
+        </record>
+
+  </data>
+</odoo>

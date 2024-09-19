@@ -1,0 +1,56 @@
+<odoo>
+  <data>
+ 
+
+    <record model="ir.ui.view" id="otrosproductos_list">
+      <field name="name">Otros Productos</field>
+      <field name="model">otrosproductos</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="elproducto"/>
+          <field name="capacidad"/>
+
+        </tree>
+      </field>
+    </record>
+
+
+         <record id="otrosproductos_form" model="ir.ui.view">
+            <field name="name">otrosproductos.form</field>
+            <field name="model">otrosproductos</field>
+            <field name="arch" type="xml">
+                <form string="Otros productos">
+                   
+                    <sheet>
+                
+                       
+
+                        <group>
+                             <field name="elproducto"/>
+                             <field name="capacidad"/>
+                        </group>
+
+                         
+                    </sheet>
+                    
+                </form>
+            </field>
+      </record>
+
+
+      
+
+    <record id="action_otrosproductos_view" model="ir.actions.act_window">
+            <field name="name">Otros productos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">otrosproductos</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   Otros productos
+                </p>
+            </field>
+    </record>
+
+  </data>
+</odoo>

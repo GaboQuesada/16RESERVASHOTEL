@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  
+
+    <!-- Form view of room reservation summary -->
+    <record id="resumen_form" model="ir.ui.view">
+        <field name="name">resumen.form</field>
+        <field name="model">resumen</field>
+        <field name="arch" type="xml">
+            <form string="Resumen">
+                <header>
+                    <separator string="Resumen" colspan="4" />
+                </header>
+                <sheet>
+                    <group colspan="4" col="4">
+                        <div>
+                            <label for="date_from" string="Summary Period" />
+                            <field name="date_from" class="oe_inline" />
+                            to
+                            <field name="date_to" class="oe_inline" />
+                        </div>
+                    </group>
+                    <notebook>
+                        <page name="room_summary" string="Resumen">
+                            <field name="summary_header" colspan="4" invisible="0" />
+                            <field name="room_summary" colspan="4" invisible="0" widget="Room_Reservation" />
+                            
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Room Reservation Summary -->
+    <record id="action_hotel_resumen" model="ir.actions.act_window">
+        <field name="name">Resumen</field>
+        <field name="res_model">resumen</field>
+        <field name="view_mode">form</field>
+    </record>
+   
+</odoo>
